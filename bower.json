@@ -1,0 +1,19 @@
+{
+  "name": "sasktel-sweeps",
+  "description": "A little rewards program for Sasktel, Brightstar Canada",
+  "main": "index.js",
+  "authors": [
+    "Mike Adamczyk <mike.adamczyk@brightstar.com>"
+  ],
+  "license": "ISC",
+  "homepage": "http://www.brightstar.com",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "backbone": "^1.3.3",
+    "angular": "^1.5.6",
+    "angular-route": "^1.5.6",
+    "angular-animate": "^1.5.6",
+    "bootstrap-sass": "^3.3.6"
+  }
+}

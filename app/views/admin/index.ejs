@@ -1,0 +1,14 @@
+<% include ../common/head.ejs %>
+
+<main class="container">
+    <h1>Admin</h1>
+
+    <p>Welcome <%= request.user.first_name; %></p>
+
+    <p>This is the submission screen! OMG!</p>
+
+    <a href="/logout" class="btn btn-primary">logout</a>
+</main>
+
+
+<% include ../common/footer.ejs %>

@@ -1,0 +1,31 @@
+{
+  "name": "sasktel-sweeps",
+  "version": "1.0.0",
+  "description": "A little rewards program for Sasktel, Brightstar Canada",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/breachofmind/sasktel-sweeps.git"
+  },
+  "author": "Mike Adamczyk <mike.adamczyk@brightstar.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/breachofmind/sasktel-sweeps/issues"
+  },
+  "homepage": "https://github.com/breachofmind/sasktel-sweeps#readme",
+  "dependencies": {
+    "ejs": "^2.4.2",
+    "express-mvc": "github:breachofmind/express-mvc"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sass": "^2.3.1",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}

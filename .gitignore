@@ -1,0 +1,6 @@
+*.DS_Store
+app/env.js
+project.iml
+.idea
+node_modules
+assets/vendor
