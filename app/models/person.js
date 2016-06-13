@@ -1,4 +1,7 @@
-var Model = require('express-mvc').Model;
+var ExpressMVC = require('express-mvc');
+
+var Model = ExpressMVC.Model;
+var utils = ExpressMVC.utils;
 
 Model.create('Person', {
 
@@ -16,8 +19,16 @@ Model.create('Person', {
      * Return the user's full name.
      * @returns {string}
      */
-    name: function()
+    name: function(reverse)
     {
-        return [this.first_name,this.last_name].join(" ");
+        return reverse ? this.last_name+", "+this.first_name : [this.first_name,this.last_name].join(" ");
+    },
+
+    toJSON: function()
+    {
+        var out = utils.compact(this, ['_id','first_name','last_name','email','phone','position','manager_id','created_at','modified_at']);
+        out['name'] = this.name(true);
+        out['_url'] = utils.url(`api/v1/person/${this.id}`);
+        return out;
     }
 });

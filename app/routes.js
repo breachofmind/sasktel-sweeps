@@ -39,6 +39,7 @@ module.exports = function(app,router,dispatch)
 
     // Application routes.
     router.get('/',       dispatch('indexController','index'));
+    router.get('/people', dispatch('indexController','people'));
     router.post('/submit', dispatch('indexController','submit'));
     router.get('/submit', function(request,response) {
         response.redirect('/');

@@ -90,7 +90,6 @@ Controller.create('restController', function(controller)
             if (request.body._id) delete request.body._id; // Mongoose has problems with this.
 
             if (! request.user) {
-
                 return response.api({error:`You are not authorized to perform this operation.`}, 401);
             }
 
@@ -118,7 +117,6 @@ Controller.create('restController', function(controller)
         create: function(request,response)
         {
             if (! request.user) {
-
                 return response.api({error:`You are not authorized to perform this operation.`}, 401);
             }
 
@@ -143,7 +141,6 @@ Controller.create('restController', function(controller)
         trash: function(request,response)
         {
             if (! request.user) {
-
                 return response.api({error:`You are not authorized to perform this operation.`}, 401);
             }
 
