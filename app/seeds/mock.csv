@@ -1,0 +1,8 @@
+first_name,last_name,email,phone,position,manager_id
+Test,Guy,test@example.com,123-345-1234,Manager,0
+Exam,Ple,test@example.com,123-345-1234,Sales Associate,1
+Dany,Stormborn,test@example.com,123-345-1234,Sales Associate,1
+Moto,Vator,test@example.com,123-345-1234,Sales Rep,2
+Johnny,Rico,test@example.com,123-345-1234,Sales Rep,2
+Rick,Grimes,test@example.com,123-345-1234,Sales Rep,3
+Tyrion,Lannister,test@example.com,123-345-1234,Sales Rep,3

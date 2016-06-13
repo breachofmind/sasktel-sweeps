@@ -43,7 +43,7 @@ var User = Model.create('User', {
      * Return the user's full name.
      * @returns {string}
      */
-    fullName: function()
+    name: function()
     {
         return [this.first_name,this.last_name].join(" ");
     }

@@ -26,6 +26,7 @@ var files = {
     src: [
         'assets/js/main.js',
         'assets/js/controllers/loginCtrl.js',
+        'assets/js/controllers/submissionCtrl.js',
     ],
 
     scss: [

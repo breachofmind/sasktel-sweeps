@@ -22,7 +22,7 @@ module.exports = {
      * The webserver base URL.
      * @var string
      */
-    url: env.environment || "http://localhost",
+    url: env.url || "http://localhost",
 
     /**
      * The directory where static content is served.
@@ -72,7 +72,7 @@ module.exports = {
      * @var object
      */
     files: {
-        models: ['user','media'],
+        models: ['user','media','person','submission'],
         controllers: ['authController','indexController','restController','adminController']
     }
 };

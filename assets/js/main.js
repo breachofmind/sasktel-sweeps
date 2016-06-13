@@ -6,11 +6,21 @@
 
     bstar.app = angular.module('app', ['ngRoute']);
 
+    /**
+     * Queue a document.ready callback.
+     * @param callback function
+     * @returns void
+     */
     var init = [setupAjaxHeaders];
     bstar.ready = function(callback) {
         init.push(callback);
     };
 
+    /**
+     * Return the value of the csrf field.
+     * Required for any ajax POST operations.
+     * @returns {string}
+     */
     bstar.csrfToken = function() {
         return $('meta[name="csrf-token"]').attr('content');
     };
@@ -28,9 +38,11 @@
         });
     }
 
-
-    $(document).ready(function() {
-
+    /**
+     * Fire when DOM loaded.
+     */
+    $(document).ready(function()
+    {
         init.forEach(function(callback) {
             callback();
         })

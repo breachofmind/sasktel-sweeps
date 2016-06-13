@@ -14,7 +14,7 @@ seeder.seedPath = __dirname + "/seeds/";
  * @param path string of seed, relative to seeder.seedPath
  * @param parser function, optional
  */
-seeder.add('media', 'media.csv');
+//seeder.add('media', 'media.csv');
 
 seeder.add('user', 'users.csv', function(row,i)
 {
@@ -24,6 +24,17 @@ seeder.add('user', 'users.csv', function(row,i)
     var salt = row.created_at.getTime().toString();
     row.password = ExpressMVC.Auth.encrypt(row.password,salt);
 
+    return row;
+});
+
+var objects = [];
+seeder.add('person', 'mock.csv', function(row,i) {
+    objects.push(row);
+    if (row.manager_id > 0) {
+        row.manager_id = objects[row.manager_id-1]._id;
+    } else {
+        row.manager_id = null;
+    }
     return row;
 });
 
