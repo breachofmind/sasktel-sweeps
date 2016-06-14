@@ -44,7 +44,7 @@
                     id="ManagerId"
                     class="form-control"
                     ng-model="input.manager_id"
-                    ng-options="person._id as person.name for person in people | team:null"
+                    ng-options="person.id as person._title for person in people | team:null"
             ></select>
         </div>
 
@@ -54,18 +54,18 @@
                     id="SalesAssocId"
                     class="form-control"
                     ng-model="input.sales_assoc_id"
-                    ng-options="person._id as person.name for person in people | team:input.manager_id"
+                    ng-options="person.id as person._title for person in people | team:input.manager_id"
                     ng-disabled="!input.manager_id">
             </select>
         </div>
 
-        <div class="form-group" ng-if="input.type == 'smb'">
+        <div class="form-group" ng-show="input.type == 'smb'">
             <label for="SalesRepId">Sales Representative</label>
             <select name="sales_rep_id"
                     id="SalesRepId"
                     class="form-control"
                     ng-model="input.sales_rep_id"
-                    ng-options="person._id as person.name for person in people | team:input.sales_assoc_id"
+                    ng-options="person.id as person.name for person in people | team:input.sales_assoc_id"
                     ng-disabled="!input.sales_assoc_id">
             </select>
         </div>
@@ -74,7 +74,7 @@
             <label for="SalesReps">Support Representative(s)</label>
 
             <input type="text" ng-model="salesRepName" placeholder="Add a person" class="form-control">
-            <button ng-click="addSalesRep()" class="btn btn-primary">Add</button>
+            <a href="javascript:;" ng-click="addSalesRep()" class="btn btn-primary">Add</a>
 
             <ul id="SupportRepList">
                 <li ng-repeat="(i,name) in input.support_assocs track by $index">{{name}} <button class="btn btn-danger" ng-click="removeSalesRep(i)">Remove</button></li>

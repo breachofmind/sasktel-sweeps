@@ -67,6 +67,7 @@
         $scope.addSalesRep = function()
         {
             $scope.input.support_assocs.push($scope.salesRepName);
+            $scope.salesRepName = null;
         };
 
         /**

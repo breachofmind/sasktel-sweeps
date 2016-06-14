@@ -5,7 +5,7 @@ var Controller  = ExpressMVC.Controller;
 var Model       = ExpressMVC.Model;
 var Paginator   = ExpressMVC.Paginator;
 
-
+var csv = require('csv');
 
 Controller.create('restController', function(controller)
 {
@@ -107,6 +107,33 @@ Controller.create('restController', function(controller)
 
                     return response.api({error:err},400);
                 });
+        },
+
+        report: function(request,response)
+        {
+            if (! request.user) {
+                return response.api({error:`You are not authorized to perform this operation.`}, 401);
+            }
+
+            Class.find().populate(blueprint.population).exec().then(function(data) {
+
+                response.setHeader('Content-disposition', 'attachment; filename='+blueprint.name+".csv");
+                response.setHeader('Content-type', 'text/csv');
+
+
+                var input = data.toCSV(true);
+
+                csv.stringify(input, function(err,output) {
+                    response.smart(output,200);
+                });
+
+            }, function(err) {
+
+                return response.api({error:err},400);
+            });
+
+
+
         },
 
         /**

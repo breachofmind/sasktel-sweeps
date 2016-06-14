@@ -6,9 +6,13 @@
     <p>Welcome <%= request.user.first_name; %></p>
     <a href="/logout">Logout</a>
 
+    <a href="/api/v1/submission/report" target="_blank" class="btn btn-primary">Generate Report</a>
+
     <div id="AdminTable" class="table-area" ng-controller="adminCtrl" ng-class="{loading:loading}">
 
-        <table class="table table-hover">
+
+
+        <table class="table">
             <thead>
             <tr>
                 <th class="td-small">Accept</th>
@@ -16,27 +20,33 @@
                 <th>Sale Date</th>
                 <th>Type</th>
                 <th>Customer Name</th>
-                <th class="td-small"><!-- Actions --></th>
+                <th>Manager</th>
             </tr>
             </thead>
 
-            <tbody>
-
-                <tr ng-repeat="item in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending}">
+            <tbody ng-repeat="item in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending}">
+                <tr ng-click="toggleItem(item)" class="table-item-data">
                     <td class="td-small">
                         <div class="custom-controls">
-                            <input type="radio" id="rb1{{item._id}}" name="rb{{item._id}}" ng-value="false" ng-model="item.accepted" ng-change="itemAccept(item)">
-                            <label for="rb1{{item._id}}" class="radio-null"><i class="mico">thumb_down</i></label>
+                            <input type="radio" id="rb1{{item.id}}" name="rb{{item.id}}" ng-value="false" ng-model="item.accepted" ng-change="itemAccept(item)">
+                            <label for="rb1{{item.id}}" class="radio-null"><i class="mico accept" title="Deny">thumb_down</i></label>
 
-                            <input type="radio" id="rb2{{item._id}}" name="rb{{item._id}}" ng-value="true" ng-model="item.accepted" ng-change="itemAccept(item)">
-                            <label for="rb2{{item._id}}" class="radio-true"><i class="mico">thumb_up</i></label>
+                            <input type="radio" id="rb2{{item.id}}" name="rb{{item.id}}" ng-value="true" ng-model="item.accepted" ng-change="itemAccept(item)">
+                            <label for="rb2{{item.id}}" class="radio-true"><i class="mico accept" title="Approve">thumb_up</i></label>
+                            <i class="mico new-flag" title="New! Pending Approval">star</i>
                         </div>
                     </td>
                     <td>{{item.created_at}}</td>
                     <td>{{item.sale_date}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.customer_name}}</td>
-                    <td class="td-small"><i class="mico link" ng-click="toggleItem(item)">add_box</i></td>
+                    <td>{{item.manager_id._title}}</td>
+                </tr>
+                <tr ng-show="item.open">
+                    <td colspan="6">
+                        <p>{{item.details}}</p>
+                        <p>{{item.sales_assoc_id._title}}</p>
+                    </td>
                 </tr>
             </tbody>
         </table>

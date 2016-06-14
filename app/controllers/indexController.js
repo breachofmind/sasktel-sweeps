@@ -36,8 +36,6 @@ Controller.create('indexController', function(controller)
             input.approved = false;
             input.sale_date = new Date(input.sale_date);
 
-            console.log(input);
-
             var submission = new Submission(input);
 
             submission.save().then(function(data) {

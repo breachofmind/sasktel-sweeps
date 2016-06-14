@@ -29,17 +29,6 @@ var User = Model.create('User', {
     },
 
     /**
-     * Converts user to a JSON with password bumped off.
-     * @returns {{}}
-     */
-    toJSON: function()
-    {
-        var out = utils.compact(this, ['_id','first_name','last_name','email','created_at','modified_at']);
-        out['_url'] = utils.url(`api/v1/user/${this.id}`);
-        return out;
-    },
-
-    /**
      * Return the user's full name.
      * @returns {string}
      */
@@ -48,7 +37,11 @@ var User = Model.create('User', {
         return [this.first_name,this.last_name].join(" ");
     }
 
-});
+})
+    .guard('password')
+    .appends('name');
+
+User.title = "name";
 
 // Don't expose to API.
 User.expose = false;

@@ -1,6 +1,6 @@
 var Model = require('express-mvc').Model;
 
-Model.create('Media', {
+var Media = Model.create('Media', {
     file_name:      { type: String, required:true},
     file_type:      { type: String, required:true },
     title:          String,
@@ -10,3 +10,5 @@ Model.create('Media', {
     modified_at:    { type: Date, default: Date.now }
 
 });
+
+Media.title = "file_name";

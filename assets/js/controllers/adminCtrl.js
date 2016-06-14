@@ -2,6 +2,15 @@
 
     app.controller('adminCtrl', AdminTableController);
 
+    function getValues(object,props)
+    {
+        var out = {};
+        props.forEach(function(prop) {
+            out[prop] = object[prop];
+        });
+        return out;
+    }
+
     function AdminTableController($scope,$http,$timeout)
     {
         $http.defaults.headers.common['X-REQUESTED-WITH'] = "XMLHttpRequest";
@@ -27,12 +36,13 @@
         $scope.itemAccept = function(item)
         {
             item.pending = false;
-            $http.put(item._url, item).success(function(response) {
+            var post = getValues(item, ['pending','accepted']);
+            $http.put(item._url, post).success(function(response) {
                 console.log(response);
             });
         };
 
-        $timeout(getData, 1000);
+        $timeout(getData, 500);
     }
 
 })(bstar.app);
