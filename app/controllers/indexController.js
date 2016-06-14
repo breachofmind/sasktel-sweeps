@@ -31,18 +31,22 @@ Controller.create('indexController', function(controller)
         submit: function(request,response)
         {
             var input = request.body;
-            var data = {errorBag:[]};
+
+            input.pending = true;
+            input.approved = false;
+            input.sale_date = new Date(input.sale_date);
+
+            console.log(input);
 
             var submission = new Submission(input);
 
             submission.save().then(function(data) {
 
-                return response.view('submit').and(data);
+                return response.smart(data,200);
 
             }, function(err) {
 
-                data.errorBag.push(err);
-                return response.view('index').and(data);
+                return response.smart({error:"There was an error.", response:err},401);
             });
 
 

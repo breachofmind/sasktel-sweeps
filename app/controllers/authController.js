@@ -31,7 +31,7 @@ Controller.create('authController', function(controller)
                 if (err) return next(err);
 
                 if (! user) {
-                    return response.smart({success:false, error:"User does not exist."}, 401);
+                    return response.smart({success:false, error:"User does not exist. "+info.message}, 401);
                 }
 
                 request.logIn(user, function(err) {

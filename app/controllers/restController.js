@@ -97,7 +97,7 @@ Controller.create('restController', function(controller)
 
             return Class
                 .findByIdAndUpdate(request.params.id, request.body, {new:true})
-                .populate(params.model.population)
+                .populate(blueprint.population)
                 .exec()
                 .then(function(data) {
 
@@ -144,7 +144,7 @@ Controller.create('restController', function(controller)
                 return response.api({error:`You are not authorized to perform this operation.`}, 401);
             }
 
-            return params.Model.remove({_id:params.id}).then(function(results) {
+            return params.Model.remove({_id:request.params.id}).then(function(results) {
                 var data = {
                     results: results,
                     objectId : params.id

@@ -4,7 +4,7 @@
 
     window.bstar = bstar;
 
-    bstar.app = angular.module('app', ['ngRoute']);
+    bstar.app = angular.module('app', ['ngRoute','720kb.datepicker']);
 
     /**
      * Queue a document.ready callback.

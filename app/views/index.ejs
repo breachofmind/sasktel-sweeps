@@ -5,7 +5,7 @@
 
     <h1>Welcome</h1>
 
-    <form action="/submit" method="POST" ng-controller="submissionCtrl">
+    <form action="/submit" method="POST" ng-controller="submissionCtrl" ng-submit="submit($event)" ng-class="{processing:processing}">
         <div class="form-group">
             <label for="CustomerName">Customer Name</label>
             <input id="CustomerName" type="text" name="customer_name" placeholder="Customer Name" ng-model="input.customer_name" class="form-control">
@@ -13,16 +13,27 @@
 
         <div class="form-group">
             <label for="SaleDate">Sale Date</label>
-            <input id="SaleDate" type="date" name="sale_date" ng-model="input.sale_date" class="form-control">
-            <small>Not usually today's date.</small>
+            <datepicker date-format="yyyy-MM-dd">
+                <input id="SaleDate" type="text" name="sale_date" ng-model="input.sale_date" class="form-control" >
+            </datepicker>
+        </div>
+
+        <div class="form-group">
+            <label for="Details">Details</label>
+            <textarea name="details" id="Details" rows="2" class="form-control" ng-model="input.details"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="BusinessPriority">Business Priority</label>
+            <textarea name="business_priority" id="BusinessPriority" rows="2" class="form-control" ng-model="input.business_priority"></textarea>
         </div>
 
         <div class="form-group">
             <label for="SaleType">Type of Sale</label>
-            <select name="sale_type"
+            <select name="type"
                     id="SaleType"
                     class="form-control"
-                    ng-model="input.sale_type"
+                    ng-model="input.type"
                     ng-options="type.value as type.text for type in types">
             </select>
         </div>
@@ -48,7 +59,7 @@
             </select>
         </div>
 
-        <div class="form-group" ng-if="input.sale_type == 'smb'">
+        <div class="form-group" ng-if="input.type == 'smb'">
             <label for="SalesRepId">Sales Representative</label>
             <select name="sales_rep_id"
                     id="SalesRepId"
@@ -59,7 +70,7 @@
             </select>
         </div>
 
-        <div class="form-group" ng-show="input.sale_type == 'corpgovt'">
+        <div class="form-group" ng-show="input.type == 'corpgovt'">
             <label for="SalesReps">Support Representative(s)</label>
 
             <input type="text" ng-model="salesRepName" placeholder="Add a person" class="form-control">

@@ -21,17 +21,24 @@ var files = {
         'assets/vendor/angular-route/angular-route.min.js',
         'assets/vendor/angular-animate/angular-animate.min.js',
         'assets/vendor/backbone/backbone-min.js',
+        'assets/vendor/moment/min/moment.min.js',
+        'assets/vendor/angularjs-datepicker/dist/angular-datepicker.min.js'
     ],
 
     src: [
         'assets/js/main.js',
         'assets/js/controllers/loginCtrl.js',
         'assets/js/controllers/submissionCtrl.js',
+        'assets/js/controllers/adminCtrl.js',
     ],
 
     scss: [
         'assets/scss/base.scss',
         'assets/scss/app.scss'
+    ],
+
+    css: [
+        'assets/vendor/angularjs-datepicker/dist/angular-datepicker.min.css'
     ]
 };
 
@@ -42,6 +49,11 @@ gulp.task('sass', function(){
         .pipe(autoprefix())
         .pipe(gulp.dest(paths.build))
         .pipe(livereload());
+});
+gulp.task('css-lib', function(){
+    return gulp.src(files.css)
+        .pipe(concat('lib.css'))
+        .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('scripts-lib', function() {
@@ -71,4 +83,4 @@ gulp.task('watch', function(){
     });
 });
 
-gulp.task('default', ['sass','scripts-lib','scripts-src']);
+gulp.task('default', ['sass','scripts-lib','scripts-src','css-lib']);

@@ -32,9 +32,11 @@ module.exports = function(app,router,dispatch)
     Template.defaults = function(template) {
         template.meta('robots', 'noindex,nofollow');
         template.style('baseCss', 'base.css');
+        template.style('libCss', 'lib.css');
         template.style('appCss', 'app.css');
         template.script('libJs', 'lib.js');
         template.script('srcJs', 'src.js');
+        template.style('materialIcons', 'https://fonts.googleapis.com/icon?family=Material+Icons');
     };
 
     // Application routes.
