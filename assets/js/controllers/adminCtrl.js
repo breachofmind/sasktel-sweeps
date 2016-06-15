@@ -18,6 +18,9 @@
 
         $scope.loading = true;
         $scope.submissions = [];
+        $scope.pager = null;
+        $scope.dateStart = moment().subtract(1,'month');
+        $scope.dateEnd = moment();
 
         function getData()
         {
@@ -27,12 +30,20 @@
             });
         }
 
+        /**
+         * Toggle an item open or closed.
+         * @param item
+         */
         $scope.toggleItem = function(item)
         {
             if (item.open == undefined) item.open = false;
             item.open = ! item.open;
         };
 
+        /**
+         * Accept or deny an item.
+         * @param item
+         */
         $scope.itemAccept = function(item)
         {
             item.pending = false;

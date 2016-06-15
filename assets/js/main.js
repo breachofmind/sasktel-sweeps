@@ -4,7 +4,7 @@
 
     window.bstar = bstar;
 
-    bstar.app = angular.module('app', ['ngRoute','720kb.datepicker']);
+    bstar.app = angular.module('app', ['datePicker','ngAnimate']);
 
     /**
      * Queue a document.ready callback.

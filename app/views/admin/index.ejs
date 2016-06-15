@@ -1,16 +1,35 @@
 <% include ../common/head.ejs %>
 
+<header id="AdminHeader">
+    <div class="container">
+        <h1>Admin</h1>
+
+        <div id="User" class="user-container">
+            <p>Welcome <strong><%= request.user.first_name; %></strong></p>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</header>
+
 <main class="container">
-    <h1>Admin</h1>
-
-    <p>Welcome <%= request.user.first_name; %></p>
-    <a href="/logout">Logout</a>
-
-    <a href="/api/v1/submission/report" target="_blank" class="btn btn-primary">Generate Report</a>
 
     <div id="AdminTable" class="table-area" ng-controller="adminCtrl" ng-class="{loading:loading}">
 
+        <div id="AdminTableActions" class="action-row">
+            <a href="/api/v1/submission/report" target="_blank" class="btn btn-primary">Generate Report</a>
 
+            <div class="date-input">
+                <small>Start date</small>
+                <input type="datetime" class="form-control" ng-model="dateStart" format="yyyy-MM-dd" date-time view="date" min-view="date"/>
+            </div>
+
+            <div class="date-input">
+                <small>End date</small>
+                <input type="datetime" class="form-control" ng-model="dateEnd" format="yyyy-MM-dd" date-time view="date" min-view="date"/>
+            </div>
+
+
+        </div>
 
         <table class="table">
             <thead>

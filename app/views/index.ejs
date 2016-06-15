@@ -13,9 +13,10 @@
 
         <div class="form-group">
             <label for="SaleDate">Sale Date</label>
-            <datepicker date-format="yyyy-MM-dd">
-                <input id="SaleDate" type="text" name="sale_date" ng-model="input.sale_date" class="form-control" >
-            </datepicker>
+
+            <div class="input-group">
+                <input type="datetime" class="form-control" ng-model="input.sale_date" format="yyyy-MM-dd" ng-required="true" date-time view="date" min-view="date"/>
+            </div>
         </div>
 
         <div class="form-group">

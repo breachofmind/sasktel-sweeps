@@ -16,13 +16,11 @@ var files = {
     lib: [
         'assets/vendor/jquery/dist/jquery.min.js',
         'assets/vendor/underscore/underscore-min.js',
-        'assets/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js',
         'assets/vendor/angular/angular.min.js',
-        'assets/vendor/angular-route/angular-route.min.js',
         'assets/vendor/angular-animate/angular-animate.min.js',
         'assets/vendor/backbone/backbone-min.js',
         'assets/vendor/moment/min/moment.min.js',
-        'assets/vendor/angularjs-datepicker/dist/angular-datepicker.min.js'
+        'node_modules/angular-datepicker/dist/index.min.js'
     ],
 
     src: [
@@ -38,7 +36,7 @@ var files = {
     ],
 
     css: [
-        'assets/vendor/angularjs-datepicker/dist/angular-datepicker.min.css'
+        'node_modules/angular-datepicker/dist/index.min.css'
     ]
 };
 
