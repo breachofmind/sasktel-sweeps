@@ -1,6 +1,9 @@
 var ExpressMVC = require('express-mvc');
+var mongoose = require('mongoose');
 
 ExpressMVC.Application.root = __dirname+"/";
+
+mongoose.Promise = require('bluebird');
 
 // Different seeder names can be created.
 var seeder = new ExpressMVC.Seeder('installation');
@@ -28,13 +31,15 @@ seeder.add('user', 'users.csv', function(row,i)
 });
 
 var objects = [];
-seeder.add('person', 'mock.csv', function(row,i) {
+seeder.add('person', 'participants.csv', function(row,i) {
     objects.push(row);
     if (row.manager_id > 0) {
         row.manager_id = objects[row.manager_id-1]._id;
     } else {
         row.manager_id = null;
     }
+    // Person can be apart of both groups
+    if (row.group == "") row.group = null;
     return row;
 });
 

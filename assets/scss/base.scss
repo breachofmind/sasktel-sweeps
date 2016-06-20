@@ -3,7 +3,7 @@
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-
+@import "vars";
 // Core variables and mixins
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
@@ -54,6 +54,8 @@
 // Utility classes
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/utilities";
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
+
+@import "linearicons";
 
 .mico {
 	font-family: 'Material Icons';

@@ -40,11 +40,12 @@
                 <th>Type</th>
                 <th>Customer Name</th>
                 <th>Manager</th>
+                <th></th>
             </tr>
             </thead>
 
-            <tbody ng-repeat="item in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending}">
-                <tr ng-click="toggleItem(item)" class="table-item-data">
+            <tbody ng-repeat="item in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending, open:item.open}">
+                <tr class="table-item-data">
                     <td class="td-small">
                         <div class="custom-controls">
                             <input type="radio" id="rb1{{item.id}}" name="rb{{item.id}}" ng-value="false" ng-model="item.accepted" ng-change="itemAccept(item)">
@@ -60,9 +61,10 @@
                     <td>{{item.type}}</td>
                     <td>{{item.customer_name}}</td>
                     <td>{{item.manager_id._title}}</td>
+                    <td class="td-empty"><a href="javascript:;" class="mico" title="Details" ng-click="toggleItem(item)">menu</a></td>
                 </tr>
                 <tr ng-show="item.open">
-                    <td colspan="6">
+                    <td colspan="7">
                         <p>{{item.details}}</p>
                         <p>{{item.sales_assoc_id._title}}</p>
                     </td>

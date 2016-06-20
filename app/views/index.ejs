@@ -1,92 +1,20 @@
 <% include common/head.ejs %>
 
-<main class="container">
-    <a href="/login" class="btn btn-primary">Login</a>
+<header id="Header">
+    <img src="/images/sasktel-logo.svg" alt="Sasktel Logo" class="logo">
+</header>
 
-    <h1>Welcome</h1>
+<main id="Body" class="container">
+    <i class="lnr-bullhorn eye-catcher"></i>
 
-    <form action="/submit" method="POST" ng-controller="submissionCtrl" ng-submit="submit($event)" ng-class="{processing:processing}">
-        <div class="form-group">
-            <label for="CustomerName">Customer Name</label>
-            <input id="CustomerName" type="text" name="customer_name" placeholder="Customer Name" ng-model="input.customer_name" class="form-control">
-        </div>
+    <h1>Win a $500 Visa Gift Card!</h1>
 
-        <div class="form-group">
-            <label for="SaleDate">Sale Date</label>
+    <div class="body-message">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, illum, nihil. Aliquam atque aut eos est fugiat molestiae nisi ratione!</p>
+    </div>
 
-            <div class="input-group">
-                <input type="datetime" class="form-control" ng-model="input.sale_date" format="yyyy-MM-dd" ng-required="true" date-time view="date" min-view="date"/>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label for="Details">Details</label>
-            <textarea name="details" id="Details" rows="2" class="form-control" ng-model="input.details"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="BusinessPriority">Business Priority</label>
-            <textarea name="business_priority" id="BusinessPriority" rows="2" class="form-control" ng-model="input.business_priority"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="SaleType">Type of Sale</label>
-            <select name="type"
-                    id="SaleType"
-                    class="form-control"
-                    ng-model="input.type"
-                    ng-options="type.value as type.text for type in types">
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="ManagerId">Manager</label>
-            <select name="manager_id"
-                    id="ManagerId"
-                    class="form-control"
-                    ng-model="input.manager_id"
-                    ng-options="person.id as person._title for person in people | team:null"
-            ></select>
-        </div>
-
-        <div class="form-group">
-            <label for="SalesAssocId">Sales Associate</label>
-            <select name="sales_assoc_id"
-                    id="SalesAssocId"
-                    class="form-control"
-                    ng-model="input.sales_assoc_id"
-                    ng-options="person.id as person._title for person in people | team:input.manager_id"
-                    ng-disabled="!input.manager_id">
-            </select>
-        </div>
-
-        <div class="form-group" ng-show="input.type == 'smb'">
-            <label for="SalesRepId">Sales Representative</label>
-            <select name="sales_rep_id"
-                    id="SalesRepId"
-                    class="form-control"
-                    ng-model="input.sales_rep_id"
-                    ng-options="person.id as person.name for person in people | team:input.sales_assoc_id"
-                    ng-disabled="!input.sales_assoc_id">
-            </select>
-        </div>
-
-        <div class="form-group" ng-show="input.type == 'corpgovt'">
-            <label for="SalesReps">Support Representative(s)</label>
-
-            <input type="text" ng-model="salesRepName" placeholder="Add a person" class="form-control">
-            <a href="javascript:;" ng-click="addSalesRep()" class="btn btn-primary">Add</a>
-
-            <ul id="SupportRepList">
-                <li ng-repeat="(i,name) in input.support_assocs track by $index">{{name}} <button class="btn btn-danger" ng-click="removeSalesRep(i)">Remove</button></li>
-            </ul>
-        </div>
-
-        <input type="hidden" value="<%= request.csrfToken(); %>" name="_csrf">
-
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
-
+    <% include _form.ejs %>
 
 </main>
 

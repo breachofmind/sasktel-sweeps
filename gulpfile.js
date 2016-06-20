@@ -15,9 +15,11 @@ var paths = {
 var files = {
     lib: [
         'assets/vendor/jquery/dist/jquery.min.js',
+        'assets/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js',
         'assets/vendor/underscore/underscore-min.js',
         'assets/vendor/angular/angular.min.js',
         'assets/vendor/angular-animate/angular-animate.min.js',
+        'assets/vendor/angular-sanitize/angular-sanitize.min.js',
         'assets/vendor/backbone/backbone-min.js',
         'assets/vendor/moment/min/moment.min.js',
         'node_modules/angular-datepicker/dist/index.min.js'
@@ -25,9 +27,11 @@ var files = {
 
     src: [
         'assets/js/main.js',
+        'assets/js/models/person.js',
         'assets/js/controllers/loginCtrl.js',
         'assets/js/controllers/submissionCtrl.js',
         'assets/js/controllers/adminCtrl.js',
+        'assets/js/directives/modal.js',
     ],
 
     scss: [
@@ -40,6 +44,8 @@ var files = {
     ]
 };
 
+// Compile SASS stylesheets.
+// @usage gulp sass
 gulp.task('sass', function(){
     return gulp.src(files.scss)
         .pipe(sass({
@@ -48,17 +54,25 @@ gulp.task('sass', function(){
         .pipe(gulp.dest(paths.build))
         .pipe(livereload());
 });
+
+// Compile CSS library stylesheets.
+// @usage gulp css-lib
 gulp.task('css-lib', function(){
     return gulp.src(files.css)
         .pipe(concat('lib.css'))
         .pipe(gulp.dest(paths.build));
 });
 
+// Compile Script libraries into one file.
+// @usage gulp script-lib
 gulp.task('scripts-lib', function() {
     return gulp.src(files.lib)
         .pipe(concat('lib.js'))
         .pipe(gulp.dest(paths.build));
 });
+
+// Compile source Scripts into one file.
+// @usage gulp script-src
 gulp.task('scripts-src', function() {
     return gulp.src(files.src)
         .pipe(sourcemaps.init())
@@ -68,10 +82,20 @@ gulp.task('scripts-src', function() {
         .pipe(livereload());
 });
 
+// Start the server.
+// @usage gulp server
 gulp.task('server', function(){
     require('./index');
 });
 
+// Run the database seeder.
+// @usage gulp seed
+gulp.task('seed', function(){
+    require('./app/seeder');
+});
+
+// Watch for changes to files and run tasks.
+// @usage gulp watch
 gulp.task('watch', function(){
     livereload.listen();
     gulp.watch('./assets/js/**/*.js',['scripts-src']);
@@ -81,4 +105,6 @@ gulp.task('watch', function(){
     });
 });
 
+// Default configuration.
+// @usage gulp
 gulp.task('default', ['sass','scripts-lib','scripts-src','css-lib']);

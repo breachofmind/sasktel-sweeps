@@ -1,0 +1,10 @@
+<div class="form-group">
+	<label for="{{id}}"><ng-transclude></ng-transclude></label>
+	<select name="{{model}}"
+	        id="{{id}}"
+	        class="form-control"
+	        ng-model="$parent.input[model]"
+	        ng-disabled="disabledIf"
+	        ng-options="person.id as person.get('_title') for person in segment"
+	></select>
+</div>

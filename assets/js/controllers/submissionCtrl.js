@@ -2,18 +2,8 @@
 
     app.controller('submissionCtrl', SubmissionFormController);
 
-    app.filter('team', function() {
-        return function(people,manager_id) {
-            var out = [];
-            for (var i=0; i<people.length; i++) {
-                if (people[i].manager_id != manager_id) {
-                    continue;
-                }
-                out.push(people[i]);
-            }
-            return out;
-        }
-    });
+    var submitUrl = "/submit";
+    var peopleUrl = "/people";
 
     var reset = {};
 
@@ -30,6 +20,10 @@
         $http.defaults.headers.common['X-CSRF-TOKEN'] = bstar.csrfToken();
 
         $scope.processing = false;
+        $scope.formComplete = function()
+        {
+            return $scope.submissionForm.$valid;
+        };
 
         $scope.types = [
             {value: "smb",       text: "Small/Medium Business"},
@@ -56,9 +50,11 @@
         }
 
         // Initial state
-        $scope.people = [];
+        $scope.people = new bstar.People;
 
-        $scope.salesRepName = null;
+        $scope.salesRepName = "";
+
+        $scope.maxSalesReps = 2;
 
         /**
          * Add a sales rep to the list.
@@ -66,8 +62,11 @@
          */
         $scope.addSalesRep = function()
         {
-            $scope.input.support_assocs.push($scope.salesRepName);
-            $scope.salesRepName = null;
+            var value = $scope.salesRepName.trim();
+            if ($scope.input.support_assocs.length < $scope.maxSalesReps && value != "") {
+                $scope.input.support_assocs.push(value);
+                $scope.salesRepName = "";
+            }
         };
 
         /**
@@ -79,20 +78,45 @@
             $scope.input.support_assocs.splice(index,1);
         };
 
+        /**
+         * Submit the form.
+         * @param $event
+         */
         $scope.submit = function($event)
         {
             $event.preventDefault();
             $scope.processing = true;
-            $http.post('/submit', $scope.input).success(function(response) {
-                $scope.processing = false;
-                $scope.input = reset;
-            })
+            $http.post(submitUrl, $scope.input)
+                .success(submitSuccess)
+                .error(submitError)
+        };
+
+        $scope.isFilled = function(field)
+        {
+            return $scope.input[field] != null && $scope.input[field] != "";
+        };
+
+        $scope.focusOn = function(elementId)
+        {
+            $timeout(function() { document.getElementById(elementId).focus(); });
         };
 
 
-        $http.get('/people').success(function(data) {
-            $scope.people = data;
+        $http.get(peopleUrl).success(function(data) {
+            $scope.people.reset(data);
         });
+
+        function submitSuccess(response)
+        {
+            $scope.processing = false;
+            $scope.input = reset;
+        }
+
+        function submitError(response)
+        {
+            $scope.processing = false;
+        }
+
     }
 
 })(bstar.app);

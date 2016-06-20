@@ -1,0 +1,114 @@
+<form action="/submit" method="POST" name="submissionForm" ng-controller="submissionCtrl" ng-submit="submit($event)" ng-class="{processing:processing}">
+
+    <div class="row">
+        <!-- Section 1 -->
+        <section id="CustomerDetails" class="form-section col-md-6">
+
+            <h2><i class="lnr-license2 section-icon"></i>Customer Information</h2>
+
+            <div class="form-group" ng-class="{filled:isFilled('customer_name')}">
+                <input id="CustomerName" type="text" name="customer_name" ng-model="input.customer_name" class="form-control" required>
+                <label for="CustomerName">Customer Name <i class="lnr-question-circle" modal-open="customer_name"></i></label>
+            </div>
+
+            <div class="form-group" ng-class="{filled:isFilled('business_priority')}">
+                <textarea name="business_priority" id="BusinessPriority" rows="2" class="form-control" ng-model="input.business_priority" required></textarea>
+                <label for="BusinessPriority">Business Priority</label>
+            </div>
+
+            <div class="form-group" ng-class="{filled:isFilled('details')}">
+                <textarea name="details" id="Details" rows="2" class="form-control" ng-model="input.details" required></textarea>
+                <label for="Details">Details</label>
+            </div>
+
+        </section>
+
+        <!-- Section 2 -->
+        <section id="SalesDetails" class="form-section col-md-6">
+
+            <h2><i class="lnr-receipt section-icon"></i>Sale Details</h2>
+
+            <div class="form-group" ng-class="{filled:isFilled('sale_date')}">
+                <div class="input-group">
+                    <input type="datetime" id="SaleDate" name="sale_date" required class="form-control" ng-model="input.sale_date" format="yyyy-MM-dd" ng-required="true" date-time view="date" min-view="date"/>
+                    <label for="SaleDate">Sale Date</label>
+                    <a href="javascript:;" class="lnr-calendar-full action" ng-click="focusOn('SaleDate')"></a>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{filled:isFilled('type')}">
+                <select name="type"
+                        id="SaleType"
+                        required
+                        class="form-control"
+                        ng-model="input.type"
+                        ng-options="type.value as type.text for type in types">
+                </select>
+                <label for="SaleType">Type of Sale</label>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- Section 3 -->
+    <section id="StaffDetails" class="form-section col-md-6">
+
+        <h2><i class="lnr-users2 section-icon"></i>Manager & Staff Information</h2>
+
+        <div class="form-group" ng-class="{filled:isFilled('manager_id')}">
+            <select name="manager_id"
+                    id="ManagerId"
+                    class="form-control"
+                    required
+                    ng-model="input.manager_id"
+                    ng-disabled="!input.type"
+                    ng-options="person.id as person.get('_title') for person in people.segment(input.type)"
+            ></select>
+            <label for="ManagerId">Manager</label>
+        </div>
+
+        <div class="form-group" ng-class="{filled:isFilled('sales_assoc_id')}">
+            <select name="sales_assoc_id"
+                    id="SalesAssocId"
+                    class="form-control"
+                    required
+                    ng-model="input.sales_assoc_id"
+                    ng-options="person.id as person.get('_title') for person in people.segment(input.type, input.manager_id)"
+                    ng-disabled="!input.manager_id">
+            </select>
+            <label for="SalesAssocId">Sales Associate</label>
+        </div>
+
+
+        <div class="form-group">
+            <p>You may enter up to two support representatives names below (optional).</p>
+            <div id="SalesRepInputGroup">
+                <input type="text" ng-model="salesRepName" placeholder="Support Rep Name" class="form-control" ng-disabled="input.support_assocs.length >= maxSalesReps">
+                <a href="javascript:;" ng-click="addSalesRep()" class="lnr-plus-circle add-rep link"></a>
+            </div>
+
+            <ul id="SupportRepList">
+                <li ng-repeat="(i,name) in input.support_assocs track by $index"><a href="javascript:;" class="lnr-circle-minus remove-rep link" ng-click="removeSalesRep(i)"></a>{{name}}</li>
+            </ul>
+        </div>
+
+    </section>
+
+
+
+
+    <input type="hidden" value="<%= request.csrfToken(); %>" name="_csrf">
+
+    <div id="SubmitFixedFooter" ng-show="formComplete()">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+    </div>
+
+</form>
+
+
+<!-- Modal text -->
+<ul class="modal-keys">
+    <li data-key="customer_name" data-title="Customer Name">
+        <p>This is the business name.</p>
+    </li>
+</ul>
