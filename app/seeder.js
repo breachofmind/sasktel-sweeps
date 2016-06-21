@@ -19,6 +19,13 @@ seeder.seedPath = __dirname + "/seeds/";
  */
 //seeder.add('media', 'media.csv');
 
+seeder.add('user', 'users.csv', function(row,i)
+{
+    row.created_at = new Date();
+
+    return row;
+});
+
 var objects = [];
 seeder.add('person', 'participants.csv', function(row,i) {
     objects.push(row);
