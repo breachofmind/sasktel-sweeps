@@ -19,17 +19,6 @@ seeder.seedPath = __dirname + "/seeds/";
  */
 //seeder.add('media', 'media.csv');
 
-seeder.add('user', 'users.csv', function(row,i)
-{
-    // Each user row is parsed before a model is created.
-    // In this case, we're creating a salted password.
-    row.created_at = new Date();
-    var salt = row.created_at.getTime().toString();
-    row.password = ExpressMVC.Auth.encrypt(row.password,salt);
-
-    return row;
-});
-
 var objects = [];
 seeder.add('person', 'participants.csv', function(row,i) {
     objects.push(row);
