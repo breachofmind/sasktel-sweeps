@@ -1,22 +1,13 @@
 <% include ../common/head.ejs %>
 
-<header id="AdminHeader">
-    <div class="container">
-        <h1>Admin</h1>
+<% include _header.ejs %>
 
-        <div id="User" class="user-container">
-            <p>Welcome <strong><%= request.user.first_name; %></strong></p>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
-</header>
 
 <main class="container">
 
     <div id="AdminTable" class="table-area" ng-controller="adminCtrl" ng-class="{loading:loading}">
 
         <div id="AdminTableActions" class="action-row">
-            <a href="{{reportUrl()}}" target="_blank" class="btn btn-primary">Generate Report</a>
 
             <div class="date-input">
                 <small>Start date</small>
@@ -40,7 +31,7 @@
                 />
             </div>
 
-
+            <a id="GenerateReportButton" href="{{reportUrl()}}" target="_blank" class="btn btn-primary">Generate Report</a>
         </div>
 
         <table class="table">
@@ -100,11 +91,11 @@
                 <p>No submissions met your criteria :|</p>
             </div>
         </div>
-        <i class="mico loader">cached</i>
+        <i class="lnr-sync loader"></i>
     </div>
 
 </main>
 
-
+<bstar-modal></bstar-modal>
 </body>
 </html>

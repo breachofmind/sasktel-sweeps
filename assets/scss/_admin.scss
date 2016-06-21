@@ -31,10 +31,15 @@
 	position:absolute; top:150px; left:50px; right:50px;
 }
 #AdminTable {
-	td {vertical-align: middle;}
-	td.td-small, th.td-small {width:50px;}
-	th.sorting a {color:black;}
-	td.td-empty {width:30px;}
+	table.table {
+		td {vertical-align: middle;}
+		td.td-small, th.td-small {width:50px;}
+		th {background: #1b1b1b;}
+		th, th a {color:gray;}
+		th.sorting a {color:white;}
+		td.td-empty {width:30px;}
+	}
+
 	.table-item-data {
 		cursor: pointer;
 		&:hover, &:hover+tr {background: #f5f5f5;}
@@ -55,9 +60,13 @@
 	}
 }
 #AdminTableActions {
+	position:relative;
 	.date-input {
 		display:inline-block; width:200px;
 	}
+}
+#GenerateReportButton {
+	position:absolute; right:0; bottom:10px;
 }
 .table-item-details {
 	h4 {border-bottom:1px dotted lightgray; padding-bottom:5px;}
@@ -67,7 +76,7 @@
 	list-style:none; padding:0;
 	strong {display:inline-block; width:130px;}
 }
-.mico.loader {
+i.loader {
 	animation: loading linear 1000ms infinite;
 	position:absolute; top:150px; left:calc(50% - 25px);
 	font-size:50px;
@@ -81,4 +90,8 @@
 	i.mico.accept {font-size:20px;}
 	input:checked+label {color:black;}
 	i.mico.new-flag {position:absolute; left:-45px; top:-3px; display:none; color:orange; font-size:28px;}
+}
+
+.new-user-row {
+	tr td.full {background:#efefef;}
 }

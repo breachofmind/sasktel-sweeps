@@ -203,10 +203,10 @@ Controller.create('restController', function(controller)
                 return response.api({error:`You are not authorized to perform this operation.`}, 401);
             }
 
-            return params.Model.remove({_id:request.params.id}).then(function(results) {
+            return Class.remove({_id:request.params.id}).exec().then(function(results) {
                 var data = {
                     results: results,
-                    objectId : params.id
+                    objectId : request.params.id
                 };
                 return response.api(data,200);
 

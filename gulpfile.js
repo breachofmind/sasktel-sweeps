@@ -31,6 +31,7 @@ var files = {
         'assets/js/controllers/loginCtrl.js',
         'assets/js/controllers/submissionCtrl.js',
         'assets/js/controllers/adminCtrl.js',
+        'assets/js/controllers/userCtrl.js',
         'assets/js/directives/modal.js',
     ],
 

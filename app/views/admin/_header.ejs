@@ -1,0 +1,10 @@
+<header id="AdminHeader">
+    <div class="container">
+        <h1><a href="/admin" class="link">Admin</a></h1>
+
+        <div id="User" class="user-container">
+            <p>Welcome <a href="/admin/users"><%= request.user.first_name; %></a></p>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</header>

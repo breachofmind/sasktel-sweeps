@@ -41,6 +41,14 @@ var User = Model.create('User', {
     .guard('password')
     .appends('name');
 
+
+User.schema.pre('save', function(next) {
+
+    this.password = Auth.encrypt(this.password, this.created_at.getTime().toString());
+    next();
+});
+
+
 User.title = "name";
 
 // Don't expose to API.

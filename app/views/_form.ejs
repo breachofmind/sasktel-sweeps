@@ -9,7 +9,12 @@
 
                 <div class="form-group" ng-class="{filled:isFilled('sale_date')}">
                     <div class="input-group">
-                        <input type="datetime" tabindex="1" id="SaleDate" name="sale_date" required class="form-control" ng-model="input.sale_date" format="yyyy-MM-dd" ng-required="true" date-time view="date" min-view="date"/>
+                        <input type="datetime" tabindex="1" id="SaleDate" name="sale_date" required class="form-control"
+                               ng-model="input.sale_date"
+                               format="YYYY-MM-DD"
+                               max-date="maxSaleDate"
+                               date-time view="date"
+                               min-view="date"/>
                         <label for="SaleDate">Sale Date</label>
                         <a href="javascript:;" tabindex="-1" class="lnr-calendar-full action" ng-click="focusOn('SaleDate')"></a>
                     </div>

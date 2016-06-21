@@ -146,6 +146,19 @@
             };
 
             /**
+             * Open an error message.
+             * @param message string
+             */
+            this.error = function(message)
+            {
+                this.open({
+                    title:"Error...",
+                    content: message,
+                    type:"error"
+                });
+            };
+
+            /**
              * Fetch the contents of a url and add to the modal dialog.
              * @param url string
              * @returns void

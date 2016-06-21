@@ -1,0 +1,67 @@
+<% include ../common/head.ejs %>
+
+<% include _header.ejs %>
+
+<main class="container">
+    <h1>Users</h1>
+
+    <div id="AdminTable" class="table-area" ng-controller="userCtrl" ng-class="{loading:loading}">
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Created Date</th>
+                    <th class="td-small"></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="(i,user) in users" data-index="{{i}}">
+                <tr>
+                    <td><a href="mailto:{{user.email}}">{{user.email}}</a></td>
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.created_at | date}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="options{{i}}">Options <span class="caret"></span></button>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;" ng-click="changePasswordOption(i)">Change Password</a></li>
+                                <li><a href="javascript:;" ng-click="removeUserOption(i)"><i class="lnr-cross-circle"></i> Delete User</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+            <!-- new user -->
+            <tbody class="new-user-row">
+            <tr>
+                <td colspan="5" class="full">New User</td>
+            </tr>
+            <tr>
+                <td><input type="text" ng-model="newUser.email" class="form-control" placeholder="Username"></td>
+                <td><input type="text" ng-model="newUser.first_name" class="form-control" placeholder="First Name"></td>
+                <td><input type="text" ng-model="newUser.last_name" class="form-control" placeholder="Last Name"></td>
+
+                <td><input type="password" ng-model="newUser.password" placeholder="Password..." class="form-control"></td>
+                <td><button ng-click="createUser()" class="btn btn-success">Create</button></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="table-message" ng-show="!users.length && !loading">
+            <div class="alert alert-info">
+                <p>No users.</p>
+            </div>
+        </div>
+        <i class="lnr-sync loader"></i>
+    </div>
+</main>
+
+<bstar-modal></bstar-modal>
+</body>
+</html>

@@ -51,13 +51,18 @@
 
         // For resetting
         for (var prop in $scope.input) {
-            reset[prop] = $scope.input[prop];
+            if ($scope.input.hasOwnProperty(prop)) {
+                reset[prop] = $scope.input[prop];
+            }
         }
 
         // Initial state
         $scope.people = new bstar.People;
 
         $scope.salesRepName = "";
+
+        // Dates should not be in the future ;)
+        $scope.maxSaleDate = moment();
 
         /**
          * Zero out the support assocs when the user changes the type again.
@@ -115,11 +120,20 @@
                 .error(submitError)
         };
 
+        /**
+         * Check if a field is filled.
+         * @param field string
+         * @returns {boolean}
+         */
         $scope.isFilled = function(field)
         {
             return $scope.input[field] != null && $scope.input[field] != "";
         };
 
+        /**
+         * Focus on an input by ID.
+         * @param elementId string
+         */
         $scope.focusOn = function(elementId)
         {
             $timeout(function() { document.getElementById(elementId).focus(); });
@@ -134,6 +148,7 @@
         {
             $scope.processing = false;
             $scope.input = reset;
+            bstar.modal.open("Thank you, your request has been submitted.");
         }
 
         function submitError(response)

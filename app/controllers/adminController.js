@@ -10,6 +10,16 @@ Controller.create('adminController', function(controller)
         index: function(request,response)
         {
             return response.view('admin/index');
+        },
+
+        users: function(request,response)
+        {
+            return response.view('admin/users');
+        },
+
+        createUser: function(request,response)
+        {
+
         }
     }
 });

@@ -33,11 +33,11 @@ module.exports = function(app,router,dispatch)
 
     Template.defaults = function(template) {
         template.meta('robots', 'noindex,nofollow');
-        template.style('baseCss', 'base.css');
-        template.style('libCss', 'lib.css');
-        template.style('appCss', 'app.css');
-        template.script('libJs', 'lib.js');
-        template.script('srcJs', 'src.js');
+        template.style('baseCss', '/base.css');
+        template.style('libCss', '/lib.css');
+        template.style('appCss', '/app.css');
+        template.script('libJs', '/lib.js');
+        template.script('srcJs', '/src.js');
         template.style('materialIcons', 'https://fonts.googleapis.com/icon?family=Material+Icons');
     };
 
@@ -48,5 +48,7 @@ module.exports = function(app,router,dispatch)
     router.get('/submit', function(request,response) {
         response.redirect('/');
     });
-    router.get('/admin',  authMiddleware, dispatch('adminController','index'));
+    router.get('/admin',        authMiddleware, dispatch('adminController','index'));
+    router.get('/admin/users',  authMiddleware, dispatch('adminController','users'));
+    router.post('/admin/users', authMiddleware, dispatch('adminController','createUser'));
 };
