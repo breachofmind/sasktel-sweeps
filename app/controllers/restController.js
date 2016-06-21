@@ -73,12 +73,70 @@ Controller.create('restController', function(controller)
         /**
          * Fetches an array of objects, with pagination.
          *
-         * GET /api/v1/{model}s
+         * GET /api/v1/{model}
          */
         fetchAll: function(request,response)
         {
             return Paginator.make(blueprint,request,response).execute();
         },
+
+        /**
+         * Create a new search.
+         *
+         * POST /api/v1/{model}/search
+         */
+        search: function(request,response)
+        {
+            if (! request.user) {
+                return response.api({error:`You are not authorized to perform this operation.`}, 401);
+            }
+
+            var search = request.body;
+
+            return Class.find(search.where).populate(blueprint.population).sort(search.sort).exec().then(function(data)
+            {
+                return response.api(data,200);
+
+            }, function(err) {
+
+                return response.api({error:err},400);
+            });
+
+        },
+
+        /**
+         * Download a report.
+         *
+         * GET /api/v1/{model}/report?s=searchCriteriaBase64
+         */
+        report: function(request,response)
+        {
+            if (! request.user) {
+                return response.api({error:`You are not authorized to perform this operation.`}, 401);
+            }
+
+            var string = new Buffer(request.query.s, 'base64').toString();
+            var search = JSON.parse(string);
+
+            // Conduct the search
+            return Class.find(search.where || null).populate(blueprint.population).sort(search.sort || null).exec().then(function(data)
+            {
+                response.setHeader('Content-disposition', 'attachment; filename='+blueprint.name+".csv");
+                response.setHeader('Content-type', 'text/csv');
+
+
+                var input = data.toCSV(true);
+
+                csv.stringify(input, function(err,output) {
+                    response.smart(output,200);
+                });
+
+            }, function(err) {
+
+                return response.api({error:err},400);
+            });
+        },
+
 
         /**
          * Update a model.
@@ -109,32 +167,6 @@ Controller.create('restController', function(controller)
                 });
         },
 
-        report: function(request,response)
-        {
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
-
-            Class.find().populate(blueprint.population).exec().then(function(data) {
-
-                response.setHeader('Content-disposition', 'attachment; filename='+blueprint.name+".csv");
-                response.setHeader('Content-type', 'text/csv');
-
-
-                var input = data.toCSV(true);
-
-                csv.stringify(input, function(err,output) {
-                    response.smart(output,200);
-                });
-
-            }, function(err) {
-
-                return response.api({error:err},400);
-            });
-
-
-
-        },
 
         /**
          * Create a new model.

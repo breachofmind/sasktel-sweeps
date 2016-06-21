@@ -25,6 +25,7 @@ module.exports = function(app,router,dispatch)
     router.get      ('/api/v1',                 dispatch('restController','index'));
     router.get      ('/api/v1/:model',          dispatch('restController','fetchAll'));
     router.get      ('/api/v1/:model/report',   dispatch('restController','report'));
+    router.post     ('/api/v1/:model/search',   dispatch('restController','search'));
     router.post     ('/api/v1/:model',          dispatch('restController','create'));
     router.get      ('/api/v1/:model/:id',      dispatch('restController','fetchOne'));
     router.put      ('/api/v1/:model/:id',      dispatch('restController','update'));

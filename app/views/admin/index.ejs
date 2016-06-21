@@ -16,16 +16,28 @@
     <div id="AdminTable" class="table-area" ng-controller="adminCtrl" ng-class="{loading:loading}">
 
         <div id="AdminTableActions" class="action-row">
-            <a href="/api/v1/submission/report" target="_blank" class="btn btn-primary">Generate Report</a>
+            <a href="{{reportUrl()}}" target="_blank" class="btn btn-primary">Generate Report</a>
 
             <div class="date-input">
                 <small>Start date</small>
-                <input type="datetime" class="form-control" ng-model="dateStart" format="yyyy-MM-dd" date-time view="date" min-view="date"/>
+                <input type="datetime" class="form-control" date-time
+                       date-change="changeSearch"
+                       ng-model="dates.start"
+                       format="YYYY-MM-DD"
+                       view="date"
+                       min-view="date"
+                />
             </div>
 
             <div class="date-input">
                 <small>End date</small>
-                <input type="datetime" class="form-control" ng-model="dateEnd" format="yyyy-MM-dd" date-time view="date" min-view="date"/>
+                <input type="datetime" class="form-control" date-time
+                       date-change="changeSearch"
+                       ng-model="dates.end"
+                       format="YYYY-MM-DD"
+                       view="date"
+                       min-view="date"
+                />
             </div>
 
 
@@ -34,12 +46,12 @@
         <table class="table">
             <thead>
             <tr>
-                <th class="td-small">Accept</th>
-                <th>Submitted Date</th>
-                <th>Sale Date</th>
-                <th>Type</th>
-                <th>Customer Name</th>
-                <th>Manager</th>
+                <th ng-class="{sorting:sortingBy('accepted')}" class="td-small"><a href="#" ng-click="sortBy('accepted')">Accept</a></th>
+                <th ng-class="{sorting:sortingBy('created_at')}"><a href="#" ng-click="sortBy('created_at')">Submitted Date</a></th>
+                <th ng-class="{sorting:sortingBy('sale_date')}"><a href="#" ng-click="sortBy('sale_date')">Sale Date</a></th>
+                <th ng-class="{sorting:sortingBy('type')}"><a href="#" ng-click="sortBy('type')">Type</a></th>
+                <th ng-class="{sorting:sortingBy('customer_name')}"><a href="#" ng-click="sortBy('customer_name')">Customer Name</a></th>
+                <th ng-class="{sorting:sortingBy('manager_id')}"><a href="#" ng-click="sortBy('manager_id')">Manager</a></th>
                 <th></th>
             </tr>
             </thead>
@@ -56,24 +68,36 @@
                             <i class="mico new-flag" title="New! Pending Approval">star</i>
                         </div>
                     </td>
-                    <td>{{item.created_at}}</td>
-                    <td>{{item.sale_date}}</td>
+                    <td>{{item.created_at | date}}</td>
+                    <td>{{item.sale_date | date}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.customer_name}}</td>
                     <td>{{item.manager_id._title}}</td>
                     <td class="td-empty"><a href="javascript:;" class="mico" title="Details" ng-click="toggleItem(item)">menu</a></td>
                 </tr>
-                <tr ng-show="item.open">
+                <tr class="table-item-details" ng-show="item.open">
                     <td colspan="7">
-                        <p>{{item.details}}</p>
-                        <p>{{item.sales_assoc_id._title}}</p>
+                        <div class="col-md-6">
+                            <h4>Details</h4>
+                            <p>{{item.details}}</p>
+                            <h4>Business Priority</h4>
+                            <p>{{item.business_priority}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Team</h4>
+                            <ul class="team-list">
+                                <li><strong>Manager</strong><span>{{item.manager_id._title}}</span></li>
+                                <li><strong>Sales Prime</strong><span>{{item.sales_assoc_id._title}}</span></li>
+                                <li ng-show="item.support_assocs.length"><strong>Support Reps</strong><span>{{item.support_assocs.join(", ")}}</span></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class="table-message" ng-show="!submissions.length && !loading">
             <div class="alert alert-info">
-                <p>No submissions yet...</p>
+                <p>No submissions met your criteria :|</p>
             </div>
         </div>
         <i class="mico loader">cached</i>
@@ -82,4 +106,5 @@
 </main>
 
 
-<% include ../common/footer.ejs %>
+</body>
+</html>

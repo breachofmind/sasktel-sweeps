@@ -16,6 +16,7 @@
         $scope.submitting = false;
 
         $scope.error = null;
+        $scope.user = null;
 
         $scope.guest = {
             username: null,
@@ -37,10 +38,21 @@
 
         };
 
+        $scope.isFilled = function(field)
+        {
+            return $scope.guest[field] != null && $scope.guest[field] != "";
+        };
+
+
         function loginSuccess(data) {
             $scope.submitting = false;
+            $scope.error = null;
             if (data.redirect) {
-                window.location = data.redirect;
+                $scope.user = data.user;
+                $timeout(function(){
+                    window.location = data.redirect;
+                }, 2000);
+
             }
         }
 

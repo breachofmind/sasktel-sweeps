@@ -16,6 +16,7 @@
     "bootstrap-sass": "^3.3.6",
     "moment": "^2.13.0",
     "jquery": "^2.0.0",
-    "angular-sanitize": "^1.5.7"
+    "angular-sanitize": "^1.5.7",
+    "angular-datepicker": "^2.0.3"
   }
 }

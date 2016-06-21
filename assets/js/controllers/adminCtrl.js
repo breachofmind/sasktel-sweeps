@@ -19,16 +19,49 @@
         $scope.loading = true;
         $scope.submissions = [];
         $scope.pager = null;
-        $scope.dateStart = moment().subtract(1,'month');
-        $scope.dateEnd = moment();
+        $scope.sort = null;
+        $scope.sortDir = true;
 
-        function getData()
+        $scope.dates = {
+            start: getFromStorage('startDate',moment().subtract(1,'month').toDate()),
+            end: getFromStorage('endDate', moment().toDate())
+        };
+
+        // The table search criteria.
+        $scope.search = {
+            sort: {pending:-1, created_at:-1},
+            where: {
+                created_at: getDateRange()
+            }
+        };
+
+        /**
+         * Get a value from local storage.
+         * @param key string
+         * @param def Date
+         * @returns {Date}
+         */
+        function getFromStorage(key,def)
         {
-            $http.get('/api/v1/submission').success(function(response) {
-                $scope.loading = false;
-                $scope.submissions = response.data;
-            });
+            var value = localStorage.getItem(key);
+            if (! value) {
+                return def;
+            }
+            return moment(new Date(value)).toDate();
         }
+
+        /**
+         * Return an object containing the date range.
+         * @returns {{$gte: number, $lte: number}}
+         */
+        function getDateRange()
+        {
+            return {
+                $gte:$scope.dates.start.toISOString(),
+                $lte:$scope.dates.end.toISOString()
+            };
+        }
+
 
         /**
          * Toggle an item open or closed.
@@ -48,12 +81,70 @@
         {
             item.pending = false;
             var post = getValues(item, ['pending','accepted']);
+
             $http.put(item._url, post).success(function(response) {
-                console.log(response);
+
+
+
+            }).error(function(response) {
+
+                item.pending = true;
             });
         };
 
-        $timeout(getData, 500);
+        $scope.sortBy = function(field)
+        {
+            if ($scope.sort == field) {
+                $scope.sortDir = !$scope.sortDir;
+            } else {
+                $scope.sortDir = true;
+            }
+            $scope.sort = field;
+            $scope.submissions.sort(function(a,b) {
+                return $scope.sortDir ? a[$scope.sort] > b[$scope.sort] : a[$scope.sort] < b[$scope.sort];
+            })
+        };
+
+        $scope.sortingBy = function(field)
+        {
+            return field == $scope.sort;
+        };
+
+        /**
+         * Generate a report url from the search criteria.
+         * @returns {string}
+         */
+        $scope.reportUrl = function()
+        {
+            return "/api/v1/submission/report?s="+btoa(JSON.stringify($scope.search));
+        };
+
+        /**
+         * Update the table with the new search criteria.
+         * @returns void
+         */
+        $scope.update = function()
+        {
+            $scope.loading = true;
+            var go = function(){
+                $http.post('/api/v1/submission/search', $scope.search).success(function(response) {
+                    $scope.loading = false;
+                    $scope.submissions = response.data;
+                });
+            };
+            $timeout(go, 500);
+        };
+
+        $scope.changeSearch = function()
+        {
+            $scope.search.where.created_at = getDateRange();
+            localStorage.setItem('startDate', $scope.dates.start);
+            localStorage.setItem('endDate', $scope.dates.end);
+            $scope.update();
+        };
+
+        // Init
+        $scope.update();
     }
 
 })(bstar.app);

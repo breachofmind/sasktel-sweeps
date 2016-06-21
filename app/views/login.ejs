@@ -1,27 +1,29 @@
 <% include common/head.ejs %>
 
-<main class="container">
-    <form action="/login" id="LoginForm" name="loginForm" method="POST" class="form-horizontal" ng-submit="submit($event)" ng-controller="loginCtrl" novalidate>
+<main id="LoginBody" class="container form-section">
+    <form action="/login" id="LoginForm" name="loginForm" method="POST" ng-submit="submit($event)" ng-controller="loginCtrl" novalidate>
 
+        <h1>Admin</h1>
         <div class="alert alert-danger" ng-show="error">
             <p>{{error}}</p>
         </div>
-        <div class="form-group">
-            <label for="UsernameInput" class="col-sm-4 control-label">Username</label>
-            <div class="col-sm-8">
-                <input type="text" ng-model="guest.username" name="username" id="UsernameInput" class="form-control">
-            </div>
+        <div class="alert alert-success" ng-show="user">
+            <p>Welcome, {{user.first_name}}. Sending you on your merry way...</p>
+        </div>
+        <div class="form-group" ng-class="{filled:isFilled('username')}">
+            <input required type="text" ng-model="guest.username" name="username" id="UsernameInput" class="form-control">
+            <label for="UsernameInput">Username</label>
         </div>
 
-        <div class="form-group">
-            <label for="PasswordInput" class="col-sm-4 control-label">Password</label>
-            <div class="col-sm-8">
-                <input type="password" ng-model="guest.password" name="password" id="PasswordInput" class="form-control">
-            </div>
+        <div class="form-group" ng-class="{filled:isFilled('password')}">
+            <input required type="password" ng-model="guest.password" name="password" id="PasswordInput" class="form-control">
+            <label for="PasswordInput">Password</label>
         </div>
 
         <div class="form-group text-right">
-            <button class="btn btn-primary has-loader" ng-class="{loading:submitting}" type="submit" ng-disabled="submitting"><i class="mico">cached</i>Submit</button>
+            <a href="/" style="margin-right:30px">Back to Site</a>
+            <button class="btn btn-primary has-loader" ng-class="{loading:submitting}" type="submit" ng-disabled="submitting"><i class="lnr-refresh"></i>Submit</button>
+
         </div>
 
 

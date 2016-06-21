@@ -22,7 +22,7 @@ var files = {
         'assets/vendor/angular-sanitize/angular-sanitize.min.js',
         'assets/vendor/backbone/backbone-min.js',
         'assets/vendor/moment/min/moment.min.js',
-        'node_modules/angular-datepicker/dist/index.min.js'
+        'assets/vendor/angular-datepicker/dist/angular-datepicker.js'
     ],
 
     src: [
@@ -40,7 +40,7 @@ var files = {
     ],
 
     css: [
-        'node_modules/angular-datepicker/dist/index.min.css'
+        'assets/vendor/angular-datepicker/dist/angular-datepicker.min.css'
     ]
 };
 

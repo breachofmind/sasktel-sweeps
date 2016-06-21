@@ -33,6 +33,26 @@
         csrfToken: function()
         {
             return $('meta[name="csrf-token"]').attr('content');
+        },
+
+        /**
+         * Serializes recursively an object for url encoding.
+         * @param obj
+         * @param prefix
+         * @returns {string}
+         */
+        serialize: function(obj,prefix)
+        {
+            var str = [];
+            for(var p in obj) {
+                if (obj.hasOwnProperty(p)) {
+                    var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+                    str.push(typeof v == "object" ?
+                        bstar.serialize(v, k) :
+                    encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                }
+            }
+            return str.join("&");
         }
     };
 

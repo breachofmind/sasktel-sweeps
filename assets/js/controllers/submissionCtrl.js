@@ -30,6 +30,11 @@
             {value: "corpgovt",  text: "Corporate/Government"},
         ];
 
+        // Support allowed is the total amount of supporting reps for this group.
+        $scope.allowed = {
+            smb:1, corpgovt:2
+        };
+
         // Form input
         $scope.input = {
             customer_name:  null,
@@ -54,7 +59,14 @@
 
         $scope.salesRepName = "";
 
-        $scope.maxSalesReps = 2;
+        /**
+         * Zero out the support assocs when the user changes the type again.
+         * @returns void
+         */
+        $scope.changeType = function()
+        {
+            $scope.input.support_assocs = [];
+        };
 
         /**
          * Add a sales rep to the list.
@@ -63,7 +75,7 @@
         $scope.addSalesRep = function()
         {
             var value = $scope.salesRepName.trim();
-            if ($scope.input.support_assocs.length < $scope.maxSalesReps && value != "") {
+            if ($scope.input.support_assocs.length < $scope.allowed[$scope.input.type] && value != "") {
                 $scope.input.support_assocs.push(value);
                 $scope.salesRepName = "";
             }
@@ -76,6 +88,18 @@
         $scope.removeSalesRep = function(index)
         {
             $scope.input.support_assocs.splice(index,1);
+        };
+
+        /**
+         * When the key is pressed when entering support reps
+         * @param $event
+         */
+        $scope.salesRepEnter = function($event)
+        {
+            if ($event.keyCode === 13) {
+                $event.preventDefault();
+                $scope.addSalesRep();
+            }
         };
 
         /**
