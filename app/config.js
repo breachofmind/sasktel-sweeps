@@ -22,7 +22,7 @@ module.exports = {
      * The webserver base URL.
      * @var string
      */
-    url: env.url || "http://localhost",
+    url: env.url || "http://localhost:8080",
 
     /**
      * The directory where static content is served.

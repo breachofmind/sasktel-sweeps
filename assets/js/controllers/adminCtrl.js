@@ -85,9 +85,8 @@
             $http.put(item._url, post).success(function(response) {
 
 
-
             }).error(function(response) {
-
+                bstar.modal.error("There was an error updating the item.");
                 item.pending = true;
             });
         };
