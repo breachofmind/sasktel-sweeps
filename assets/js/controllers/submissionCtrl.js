@@ -148,7 +148,7 @@
         {
             $scope.processing = false;
             $scope.input = reset;
-            bstar.modal.open("Thank you, your request has been submitted.");
+            bstar.modal.openKey('submitted');
         }
 
         function submitError(response)

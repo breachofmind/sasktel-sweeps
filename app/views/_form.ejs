@@ -15,7 +15,7 @@
                                max-date="maxSaleDate"
                                date-time view="date"
                                min-view="date"/>
-                        <label for="SaleDate">Sale Date</label>
+                        <label for="SaleDate">Date of Sale <i class="lnr-question-circle" modal-open="sale_date"></i></label>
                         <a href="javascript:;" tabindex="-1" class="lnr-calendar-full action" ng-click="focusOn('SaleDate')"></a>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                             ng-disabled="!input.type"
                             ng-options="person.id as person.get('_title') for person in people.segment(input.type)"
                     ></select>
-                    <label for="ManagerId">Manager Name</label>
+                    <label for="ManagerId">Manager Name <i class="lnr-question-circle" modal-open="manager_id"></i></label>
                 </div>
 
                 <div class="form-group" ng-class="{filled:isFilled('sales_assoc_id')}">
@@ -87,7 +87,7 @@
                             ng-options="person.id as person.get('_title') for person in people.segment(input.type, input.manager_id)"
                             ng-disabled="!input.manager_id">
                     </select>
-                    <label for="SalesAssocId">Sales Prime Name</label>
+                    <label for="SalesAssocId">Sales Prime Name <i class="lnr-question-circle" modal-open="sales_assoc_id"></i></label>
                 </div>
 
 
@@ -128,14 +128,26 @@
 
 <!-- Modal text -->
 <ul class="modal-keys">
+    <li data-key="sale_date" data-title="Date of Sale">
+        <p>This is the date the sale was moved to stage 3 within Insight.</p>
+    </li>
     <li data-key="customer_name" data-title="Customer Name">
-        <p>This is the business name.</p>
+        <p>This is the business name as it appears in Insight.</p>
     </li>
     <li data-key="business_priority" data-title="Business Priority">
-        <p>Explanatory text.</p>
+        <p>You can leverage this from your completed Executive Summary document.</p>
     </li>
     <li data-key="details" data-title="Specific Relevant Value">
-        <p>Explanatory text.</p>
+        <p>This is the specific value that the sale/solution provides that addresses the customer's business priority. You can leverage this from your completed Executive Summary document.</p>
+    </li>
+    <li data-key="manager_id" data-title="Manager">
+        <p>Select the manager to whom the Sales Prime reports.</p>
+    </li>
+    <li data-key="sales_assoc_id" data-title="Sales Prime">
+        <p>Select the account rep or sales rep that completed the sale.</p>
     </li>
 
+    <li data-key="submitted" data-title="Thank you!">
+        <p>Thank you for your entry. Winners will be drawn at the end of every month. The more sales you enter, the more chances you have to win! Good luck!</p>
+    </li>
 </ul>
