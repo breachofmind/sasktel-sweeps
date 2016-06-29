@@ -38,7 +38,7 @@
         // Form input
         $scope.input = {
             customer_name:  null,
-            sale_date:      new Date(),
+            sale_date:      moment(),
             type:           "smb",
             details:        "",
             business_priority : "",
