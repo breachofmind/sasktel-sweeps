@@ -38,7 +38,7 @@ Controller.create('indexController', function(controller)
 
             var submission = new Submission(input);
 
-            submission.save().then(function(data) {
+            return submission.save().then(function(data) {
 
                 return response.smart(data,200);
 

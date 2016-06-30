@@ -10,7 +10,14 @@ module.exports = function(app,router,dispatch)
 {
     var authMiddleware = function(request,response,next) {
         if (! request.user) {
-            response.redirect('/login');
+            return response.redirect('/login');
+        }
+        next();
+    };
+    var authApiMiddleware = function(request,response,next)
+    {
+        if (! request.user) {
+            return response.api({error:`You are not authorized to perform this operation.`}, 401);
         }
         next();
     };
@@ -24,12 +31,12 @@ module.exports = function(app,router,dispatch)
     // RESTful api
     router.get      ('/api/v1',                 dispatch('restController','index'));
     router.get      ('/api/v1/:model',          dispatch('restController','fetchAll'));
-    router.get      ('/api/v1/:model/report',   dispatch('restController','report'));
-    router.post     ('/api/v1/:model/search',   dispatch('restController','search'));
-    router.post     ('/api/v1/:model',          dispatch('restController','create'));
+    router.get      ('/api/v1/:model/report',   authApiMiddleware, dispatch('restController','report'));
+    router.post     ('/api/v1/:model/search',   authApiMiddleware, dispatch('restController','search'));
+    router.post     ('/api/v1/:model',          authApiMiddleware, dispatch('restController','create'));
     router.get      ('/api/v1/:model/:id',      dispatch('restController','fetchOne'));
-    router.put      ('/api/v1/:model/:id',      dispatch('restController','update'));
-    router.delete   ('/api/v1/:model/:id',      dispatch('restController','trash'));
+    router.put      ('/api/v1/:model/:id',      authApiMiddleware, dispatch('restController','update'));
+    router.delete   ('/api/v1/:model/:id',      authApiMiddleware, dispatch('restController','trash'));
 
     Template.defaults = function(template) {
         template.meta('robots', 'noindex,nofollow');

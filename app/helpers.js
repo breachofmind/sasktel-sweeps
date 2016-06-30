@@ -17,54 +17,63 @@ Array.prototype.keymap = function(process)
     return out;
 };
 
-
-Array.prototype.toCSV = function(includeHeaders)
+/**
+ * Out the array to a csv format.
+ * @param fields object
+ * @param includeHeaders boolean
+ * @returns {*}
+ */
+Array.prototype.toCSV = function(fields,includeHeaders,parser)
 {
     if (! this.length) return "";
 
+    /**
+     * Return the value of the result
+     * @param result mixed
+     * @returns {string}
+     */
     var getValue = function(result) {
 
         if (typeof result == 'boolean') {
             return result ? 'TRUE' : 'FALSE';
         }
-        if (Array.isArray(result)) {
+        else if (Array.isArray(result)) {
             return result.join(", ");
         }
-        if (result instanceof Date) {
-            return result.toString();
+        else if (result instanceof Date) {
+            return result.toExcelDate();
         }
-        if (! result) {
+        else if (! result) {
             return "";
         }
-
-        if (typeof result == 'object') {
+        else if (typeof result == 'object') {
             if (result.toJSON) {
                 var object = result.toJSON();
                 return object._title;
             }
-            if (result.toString) {
+            if (typeof result.toString == 'function') {
                 return result.toString();
             }
         }
-
         return result;
     };
 
     var out = [], headers = [];
+
     this.forEach(function(o) {
 
         var object = o;
         if (o.toJSON) {
             object = o.toJSON();
         }
+        if (parser) parser(object);
         var csv = [];
-        for (var header in object)
+        for (var field in fields)
         {
             if (! out.length && includeHeaders) {
-                headers.push (header);
+                headers.push(fields[field]);
             }
-
-            csv.push(getValue(object[header]));
+            csv.push( getValue(object[field]) );
         }
         out.push(csv);
     });
@@ -74,4 +83,11 @@ Array.prototype.toCSV = function(includeHeaders)
     }
 
     return out;
+};
+
+Date.prototype.toExcelDate = function()
+{
+    var date = [this.getMonth()+1, this.getDate(), this.getFullYear()].join("/");
+    var time = [this.getHours(), this.getMinutes(), this.getSeconds()].join(":");
+    return date + " " + time;
 };

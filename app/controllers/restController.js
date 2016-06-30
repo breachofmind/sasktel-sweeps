@@ -3,20 +3,22 @@ var ExpressMVC = require('express-mvc');
 
 var Controller  = ExpressMVC.Controller;
 var Model       = ExpressMVC.Model;
-var Paginator   = ExpressMVC.Paginator;
+var utils       = ExpressMVC.utils;
 
 var csv = require('csv');
 
-Controller.create('restController', function(controller)
+Controller.create('restController', function(controller, app)
 {
-    var Class,Object,blueprint;
+    var Class,
+        object,
+        blueprint;
 
     /**
      * Resolve the model parameter with the model class.
      */
     controller.bind('model', function(value,request,response)
     {
-        blueprint = Model.get(value.toLowerCase());
+        blueprint = Model.get(value);
 
         if (! blueprint) {
             return response.api({error:`Model "${value}" doesn't exist.`}, 404);
@@ -35,11 +37,26 @@ Controller.create('restController', function(controller)
     controller.bind('id', function(value,request)
     {
         if (Class && value) {
-            return Object = Class.findOne({_id: value}).exec();
+            return object = Class.findOne({_id: value});
         }
     });
 
+    controller.query('p', function(value,request)
+    {
+        request.query.filter = blueprint.paging(utils.fromBase64(value));
+    });
 
+    function reportParser()
+    {
+        if (blueprint.name == "Submission") {
+            return function(row) {
+                row.support_assoc_0 = row.support_assocs[0] || "";
+                row.support_assoc_1 = row.support_assocs[1] || "";
+                return row;
+            }
+        }
+        return null;
+    }
 
     return {
 
@@ -60,7 +77,7 @@ Controller.create('restController', function(controller)
          */
         fetchOne: function(request,response)
         {
-            return Object.then(function(data) {
+            return object.exec().then(function(data) {
 
                 return response.api(data,200);
 
@@ -77,7 +94,62 @@ Controller.create('restController', function(controller)
          */
         fetchAll: function(request,response)
         {
-            return Paginator.make(blueprint,request,response).execute();
+            var paging = {
+                count:      0,
+                total:      0,
+                limit:      app.config.limit || 10000,
+                filter:     request.getQuery('filter', null),
+                sort:       request.getQuery('sort', blueprint.range()),
+                next:       null
+            };
+            /**
+             * Sets up the paging object with the next URL string.
+             * @param data array
+             * @returns object
+             */
+            paging.setNext = function(data)
+            {
+                if (data.length) {
+                    var lastValue = data[data.length-1][blueprint.key];
+                }
+                this.count = data.length;
+                this.next = this.total > this.limit
+                    ? utils.toBase64(lastValue.toString())
+                    : null;
+
+                return this;
+            };
+
+            // Find the total record count first, then find the range.
+            return Class.count(paging.filter).exec().then(function(count) {
+
+                paging.total = count;
+
+                var promise = Class
+                    .find       (paging.filter)
+                    .sort       (paging.sort)
+                    .limit      (paging.limit)
+                    .populate   (blueprint.population)
+                    .exec();
+
+                // After finding the count, find the records.
+                return promise.then(function(data) {
+
+                    paging.setNext(data);
+
+                    return response.api(data,200, {pagination: paging});
+
+                }, function(err) {
+
+                    // Model.find() error
+                    return response.api({error:err},400);
+                });
+
+            }, function(err) {
+
+                // Model.count() error
+                return response.api({error:err},400);
+            });
         },
 
         /**
@@ -87,10 +159,6 @@ Controller.create('restController', function(controller)
          */
         search: function(request,response)
         {
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
-
             var search = request.body;
 
             return Class.find(search.where).populate(blueprint.population).sort(search.sort).exec().then(function(data)
@@ -111,10 +179,6 @@ Controller.create('restController', function(controller)
          */
         report: function(request,response)
         {
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
-
             var string = new Buffer(request.query.s, 'base64').toString();
             var search = JSON.parse(string);
 
@@ -124,19 +188,18 @@ Controller.create('restController', function(controller)
                 response.setHeader('Content-disposition', 'attachment; filename='+blueprint.name+".csv");
                 response.setHeader('Content-type', 'text/csv');
 
-
-                var input = data.toCSV(true);
+                var input = data.toCSV(blueprint.labels, true, reportParser());
 
                 csv.stringify(input, function(err,output) {
                     response.smart(output,200);
                 });
+                return true;
 
             }, function(err) {
 
                 return response.api({error:err},400);
             });
         },
-
 
         /**
          * Update a model.
@@ -146,10 +209,6 @@ Controller.create('restController', function(controller)
         update: function(request,response)
         {
             if (request.body._id) delete request.body._id; // Mongoose has problems with this.
-
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
 
             request.body.modified_at = Date.now();
 
@@ -167,7 +226,6 @@ Controller.create('restController', function(controller)
                 });
         },
 
-
         /**
          * Create a new model.
          *
@@ -175,10 +233,6 @@ Controller.create('restController', function(controller)
          */
         create: function(request,response)
         {
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
-
             var model = new Class (request.body);
 
             return model.save().then(function(data)
@@ -199,11 +253,7 @@ Controller.create('restController', function(controller)
          */
         trash: function(request,response)
         {
-            if (! request.user) {
-                return response.api({error:`You are not authorized to perform this operation.`}, 401);
-            }
-
-            return Class.remove({_id:request.params.id}).exec().then(function(results) {
+            return Class.remove({_id:request.params.id}).then(function(results) {
                 var data = {
                     results: results,
                     objectId : request.params.id

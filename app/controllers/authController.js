@@ -41,8 +41,11 @@ Controller.create('authController', function(controller)
                     }
 
                     return response.smart({success:true, user:user, redirect:"/admin"}, 200);
-                })
+                });
+
             })(request,response,next);
+
+            return true;
         }
     }
 });
