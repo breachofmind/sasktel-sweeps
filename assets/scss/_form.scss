@@ -1,3 +1,6 @@
+#SubmissionForm {
+	min-height:200px;
+}
 .form-section {
 	h2 {font-size:1.5em; margin-bottom:30px;}
 	margin-bottom:30px;
@@ -68,4 +71,7 @@
 #LoginForm {
 	width:100%; max-width:500px;
 	display:block; margin:50px auto;
+}
+.support-rep-input {
+	margin-bottom:10px;
 }

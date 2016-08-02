@@ -91,6 +91,24 @@
             });
         };
 
+        /**
+         * Delete an item from the database.
+         * @param item
+         * @param i
+         */
+        $scope.itemDelete = function(item,i)
+        {
+            if (window.confirm("Are you sure you want to delete this item?")) {
+                $scope.loading = true;
+                $http.delete(item._url).success(function(response) {
+                    $scope.submissions.splice(i,1);
+                }).finally(function(){
+                    $scope.loading = false;
+                })
+
+            }
+        };
+
         $scope.sortBy = function(field)
         {
             if ($scope.sort == field) {

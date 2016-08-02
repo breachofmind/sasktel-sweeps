@@ -1,6 +1,10 @@
-<form action="/submit" method="POST" name="submissionForm" ng-controller="submissionCtrl" ng-submit="submit($event)" ng-class="{processing:processing}">
+<form action="/submit" method="POST" name="submissionForm" ng-controller="submissionCtrl" ng-submit="submit($event)" ng-class="{processing:processing}" id="SubmissionForm">
 
-    <div class="row">
+    <div class="alert alert-success" ng-show="submitted">
+        <p>Your details have been submitted. Thank you!</p>
+    </div>
+
+    <div class="row" ng-hide="submitted">
         <div class="col-md-6">
             <!-- Section 1 -->
             <section id="SalesDetails" class="form-section">
@@ -94,13 +98,10 @@
                 <div id="SalesRepInputContainer" class="form-group">
                     <p>You may enter up to {{allowed[input.type]}} support representatives names below (optional).</p>
                     <div id="SalesRepInputGroup">
-                        <input type="text" tabindex="7" ng-keydown="salesRepEnter($event)" ng-model="salesRepName" placeholder="Support Rep Name" class="form-control" ng-disabled="input.support_assocs.length >= allowed[input.type]">
-                        <a href="javascript:;" ng-click="addSalesRep()" class="lnr-plus-circle add-rep link"></a>
+                        <div ng-repeat="(i,val) in allowedInputTypeArray() track by $index" class="support-rep-input">
+                            <input type="text" tabindex="7" ng-model="input.support_assocs[i]" placeholder="Support Rep Name" class="form-control">
+                        </div>
                     </div>
-
-                    <ul id="SupportRepList">
-                        <li ng-repeat="(i,name) in input.support_assocs track by $index"><a href="javascript:;" class="lnr-circle-minus remove-rep link" ng-click="removeSalesRep(i)"></a><strong>{{name}}</strong></li>
-                    </ul>
                 </div>
 
                 <p><strong>Please note:</strong> The supporting Customer Profile, Pre-call Plan and Solution Needs Template must all be attached in Insight to be eligible to win.</p>

@@ -47,7 +47,7 @@
             </tr>
             </thead>
 
-            <tbody ng-repeat="item in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending, open:item.open}">
+            <tbody ng-repeat="(i,item) in submissions" class="table-item" ng-class="{pending:item.pending, accepted:item.accepted, 'not-accepted':!item.accepted && !item.pending, open:item.open}">
                 <tr class="table-item-data">
                     <td class="td-small">
                         <div class="custom-controls">
@@ -82,6 +82,7 @@
                                 <li><strong>Sales Prime</strong><span>{{item.sales_assoc_id._title}}</span></li>
                                 <li ng-show="item.support_assocs.length"><strong>Support Reps</strong><span>{{item.support_assocs.join(", ")}}</span></li>
                             </ul>
+                            <button class="btn btn-danger" ng-click="itemDelete(item,i)">Delete</button>
                         </div>
                     </td>
                 </tr>

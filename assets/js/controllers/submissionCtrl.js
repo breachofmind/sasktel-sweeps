@@ -20,6 +20,8 @@
         $http.defaults.headers.common['X-CSRF-TOKEN'] = bstar.csrfToken();
 
         $scope.processing = false;
+        $scope.submitted = false;
+
         $scope.formComplete = function()
         {
             return $scope.submissionForm.$valid;
@@ -76,6 +78,7 @@
         /**
          * Add a sales rep to the list.
          * @returns void
+         * @deprecated
          */
         $scope.addSalesRep = function()
         {
@@ -89,6 +92,7 @@
         /**
          * Remove a sales rep from the list.
          * @returns void
+         * @deprecated
          */
         $scope.removeSalesRep = function(index)
         {
@@ -98,6 +102,7 @@
         /**
          * When the key is pressed when entering support reps
          * @param $event
+         * @deprecated
          */
         $scope.salesRepEnter = function($event)
         {
@@ -105,6 +110,15 @@
                 $event.preventDefault();
                 $scope.addSalesRep();
             }
+        };
+
+        /**
+         * Returns an array based on the number of allowed for the input type.
+         * @returns {Array}
+         */
+        $scope.allowedInputTypeArray = function()
+        {
+            return new Array($scope.allowed[$scope.input.type]);
         };
 
         /**
@@ -118,6 +132,9 @@
             $http.post(submitUrl, $scope.input)
                 .success(submitSuccess)
                 .error(submitError)
+                .finally(function(){
+                    $scope.processing = false;
+                })
         };
 
         /**
@@ -147,6 +164,7 @@
         function submitSuccess(response)
         {
             $scope.processing = false;
+            $scope.submitted = true;
             $scope.input = reset;
             bstar.modal.openKey('submitted');
         }
